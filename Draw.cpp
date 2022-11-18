@@ -84,22 +84,42 @@ void Draw::pixel(const Point<int>& dst, unsigned int color)const
 	DrawPixel(static_cast<int>(shake.x(lv)) + pos.x + dst.x, static_cast<int>(shake.y(lv)) + pos.y + dst.y, color);
 }
 
-void Draw::rect(int x, int y, int w, int h, unsigned int color, bool fill)const
+void Draw::line(int x0, int y0, int x1, int y1, unsigned int color, int thick) const
+{
+	DrawLine(static_cast<int>(shake.x(lv)) + pos.x + x0, static_cast<int>(shake.y(lv)) + pos.y + y0, static_cast<int>(shake.x(lv)) + pos.x + x1, static_cast<int>(shake.y(lv)) + pos.y + y1, color, thick);
+}
+
+void Draw::line(const Point<int>& dst0, const Point<int>& dst1, unsigned int color, int thick) const
+{
+	DrawLine(static_cast<int>(shake.x(lv)) + pos.x + dst0.x, static_cast<int>(shake.y(lv)) + pos.y + dst0.y, static_cast<int>(shake.x(lv)) + pos.x + dst1.x, static_cast<int>(shake.y(lv)) + pos.y + dst1.y, color, thick);
+}
+
+void Draw::lineAA(float x0, float y0, float x1, float y1, unsigned int color, float thick) const
+{
+	DrawLineAA(shake.x(lv) + pos.x + x0, shake.y(lv) + pos.y + y0, shake.x(lv) + pos.x + x1, shake.y(lv) + pos.y + y1, color, thick);
+}
+
+void Draw::lineAA(const Point<float>& dst0, const Point<float>& dst1, unsigned int color, float thick) const
+{
+	DrawLine(shake.x(lv) + pos.x + dst0.x, shake.y(lv) + pos.y + dst0.y, shake.x(lv) + pos.x + dst1.x, shake.y(lv) + pos.y + dst1.y, color, thick);
+}
+
+void Draw::box(int x, int y, int w, int h, unsigned int color, bool fill)const
 {
 	DrawBox(static_cast<int>(shake.x(lv)) + pos.x + x, static_cast<int>(shake.y(lv)) + pos.y + y, static_cast<int>(shake.x(lv)) + pos.x + x + w, static_cast<int>(shake.y(lv)) + pos.y + y + h, color, fill);
 }
 
-void Draw::rect(const Point<int>& dst, const Point<int>& siz, unsigned int color, bool fill)const
+void Draw::box(const Point<int>& dst, const Point<int>& siz, unsigned int color, bool fill)const
 {
 	DrawBox(static_cast<int>(shake.x(lv)) + pos.x + dst.x, static_cast<int>(shake.y(lv)) + pos.y + dst.y, static_cast<int>(shake.x(lv)) + pos.x + dst.x + siz.x, static_cast<int>(shake.y(lv)) + pos.y + dst.y + siz.y, color, fill);
 }
 
-void Draw::rectAA(float x, float y, float w, float h, unsigned int color, bool fill, float thick)const
+void Draw::boxAA(float x, float y, float w, float h, unsigned int color, bool fill, float thick)const
 {
 	DrawBoxAA(shake.x(lv) + pos.x + x, shake.y(lv) + pos.y + y, shake.x(lv) + pos.x + x + w, shake.y(lv) + pos.y + y + h, color, fill, thick);
 }
 
-void Draw::rectAA(const Point<float>& dst, const Point<float>& siz, unsigned int color, bool fill, float thick)const
+void Draw::boxAA(const Point<float>& dst, const Point<float>& siz, unsigned int color, bool fill, float thick)const
 {
 	DrawBoxAA(shake.x(lv) + pos.x + dst.x, shake.y(lv) + pos.y + dst.y, shake.x(lv) + pos.x + dst.x + siz.x, shake.y(lv) + pos.y + dst.y + siz.y, color, fill, thick);
 }

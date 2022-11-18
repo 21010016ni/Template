@@ -1,18 +1,20 @@
 #include "Game.hpp"
 #include "Input.hpp"
 #include "Config.hpp"
-#include "Effect.h"
+#include "Effect.hpp"
+#include "ParticleDust.hpp"
 
 void Game::preset()
 {
+	Particle::set<Dust>(20);
 }
 
 Game::Message Game::update()
 {
 	Particle::update();
-	if (Keyboard::push(VK_SPACE))
+	if (Mouse::click(MOUSE_INPUT_1))
 	{
-		Particle::emit<Effect>(common::width / 2, common::height / 2);
+		Particle::emit<Effect>(Mouse::x(), Mouse::y());
 	}
 	if (Keyboard::push(VK_ESCAPE))
 	{

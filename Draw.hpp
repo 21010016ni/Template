@@ -94,10 +94,15 @@ public:
 	void pixel(int x, int y, unsigned int color)const;
 	void pixel(const Point<int>& dst, unsigned int color)const;
 
-	void rect(int x, int y, int w, int h, unsigned int color, bool fill)const;
-	void rect(const Point<int>& dst, const Point<int>& siz, unsigned int color, bool fill)const;
-	void rectAA(float x, float y, float w, float h, unsigned int color, bool fill, float thick = 1.0f)const;
-	void rectAA(const Point<float>& dst, const Point<float>& siz, unsigned int color, bool fill, float thick = 1.0f)const;
+	void line(int x0, int y0, int x1, int y1, unsigned int color, int thick = 1)const;
+	void line(const Point<int>& dst0, const Point<int>& dst1, unsigned int color, int thick = 1)const;
+	void lineAA(float x0, float y0, float x1, float y1, unsigned int color, float thick = 1.0f)const;
+	void lineAA(const Point<float>& dst0, const Point<float>& dst1, unsigned int color, float thick = 1.0f)const;
+
+	void box(int x, int y, int w, int h, unsigned int color, bool fill)const;
+	void box(const Point<int>& dst, const Point<int>& siz, unsigned int color, bool fill)const;
+	void boxAA(float x, float y, float w, float h, unsigned int color, bool fill, float thick = 1.0f)const;
+	void boxAA(const Point<float>& dst, const Point<float>& siz, unsigned int color, bool fill, float thick = 1.0f)const;
 
 	void circle(int x, int y, int r, unsigned int color, bool fill, int thick = 1)const;
 	void circle(const Point<int>& dst, int r, unsigned int color, bool fill, int thick = 1)const;

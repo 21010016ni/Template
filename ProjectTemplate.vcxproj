@@ -150,12 +150,13 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Particle.cpp" />
+    <ClCompile Include="ParticleDust.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Config.hpp" />
     <ClInclude Include="convert_string.hpp" />
     <ClInclude Include="Draw.hpp" />
-    <ClInclude Include="Effect.h" />
+    <ClInclude Include="Effect.hpp" />
     <ClInclude Include="Handle.hpp" />
     <ClInclude Include="Input.hpp" />
     <ClInclude Include="Game.hpp" />
