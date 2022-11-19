@@ -9,9 +9,9 @@
 class Snowflake
 {
 protected:
-	int duration;
+	short duration;
 	
-	Snowflake(int duration) :duration(duration) {};
+	Snowflake(short duration) :duration(duration) {};
 
 public:
 	virtual Snowflake& operator--() { --duration; return *this; }

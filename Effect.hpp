@@ -1,79 +1,51 @@
 #pragma once
-#include <functional>
+#include <DxLib.h>
+#include <unordered_map>
 #include "Particle.hpp"
 #include "Draw.hpp"
-#include "DxLib.h"
 
-struct Pixel
+class Effect
 {
-	unsigned char mode;
-	unsigned int color;
-	std::function<Point<float>(int)> p0;
-	std::function<unsigned char(int)> value;
-
-	Pixel(unsigned char mode, unsigned int color, std::function<Point<float>(int)> p0, std::function<unsigned char(int)> value)
-		:mode(mode), value(value), color(color), p0(p0) {}
-
-	virtual void draw(const Draw& draw, int t)const = 0;
-};
-
-struct Circle :public Pixel
-{
-	float r;
-	int num;
-	bool fill;
-	float thick;
-
-	Circle(unsigned char mode, unsigned int color, float r, int num, bool fill, float thick, std::function<Point<float>(int)> p, std::function<unsigned char(int)> value)
-		:Pixel(mode, color, p, value), r(r), num(num), fill(fill), thick(thick) {}
-
-	void draw(const Draw& draw, int t)const override
+	class Template
 	{
-		draw.blend(mode, value(t));
-		draw.circleAA(p0(t), r, num, color, fill, thick);
-	}
-};
+		friend Effect;
 
-struct Line :public Pixel
-{
-	float thick;
-	std::function<Point<float>(int)> p1;
+		struct Pixel
+		{
+			unsigned char mode;
+			short start;
+			std::vector<uint32_t> func;
+			Pixel(unsigned char mode, unsigned short start) :mode(mode), start(start) {}
+		};
 
-	Line(unsigned char mode, unsigned int color, float thick, std::function<Point<float>(int)> p0, std::function<Point<float>(int)> p1, std::function<unsigned char(int)> value)
-		:Pixel(mode, color, p0, value), thick(thick), p1(p1) {}
+		struct Circle :public Pixel
+		{
+			int num;
+			bool fill;
+			Circle(unsigned char mode, unsigned short start, int num, bool fill) :Pixel(mode, start), num(num), fill(fill) {}
+		};
 
-	void draw(const Draw& draw, int t)const override
-	{
-		draw.blend(mode, value(t));
-		draw.lineAA(p0(t), p1(t), color, thick);
-	}
-};
+		struct Polygon :public Pixel
+		{
+			int num;
+			Polygon(unsigned char mode, unsigned short start, int num) :Pixel(mode, start), num(num) {}
+		};
 
-struct Polygon :public Pixel
-{
-	void draw(const Draw& draw, int t)const override
-	{
-		
-	}
-};
+		struct Line :public Pixel
+		{
+			Line(unsigned char mode, unsigned short start) :Pixel(mode, start) {}
+		};
 
-class Effect :public Snowflake
-{
-	Draw d;
-	int t;
-	std::vector<std::unique_ptr<Pixel>> shape;
+		short duration;
+		std::vector<std::unique_ptr<Pixel>> shape;
 
-public:
-	Effect(int x, int y);
+	public:
+		Template(int duration) :duration(duration) {}
+	};
 
-	void update()override
-	{
-		++t;
-	}
-	void draw()const override
-	{
-		for (const auto& i : shape)
-			i->draw(d, t);
-	}
+	static inline std::unordered_map<int, Template> data;
+
+	static int load(const char* FileName);
+	static void TestWrite();
 };
 
