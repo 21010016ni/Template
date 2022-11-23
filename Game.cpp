@@ -14,7 +14,12 @@ Game::Message Game::update()
 	Particle::update();
 	if (Mouse::click(MOUSE_INPUT_1))
 	{
-		Particle::emit<Effect>(Mouse::x(), Mouse::y());
+		//Particle::emit<Effect>(Mouse::x(), Mouse::y());
+	}
+	if(Keyboard::push(VK_SPACE))
+	{
+		Effect::TestWrite();
+		Effect::load("data.bin");
 	}
 	if (Keyboard::push(VK_ESCAPE))
 	{

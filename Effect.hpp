@@ -39,12 +39,28 @@ class Effect
 		short duration;
 		std::vector<std::unique_ptr<Pixel>> shape;
 
+		class Instance :public Snowflake
+		{
+			// ‚±‚Ì•Ó‚É}Œ`‚Æ‚»‚ÌŠÖ”‚ğ‚µ‚Ü‚¢‚±‚Ş\‘¢‘Ì
+
+			Point<float> pos;
+			int t;
+			int buffer[8];
+
+		public:
+			Instance(int duration, float x, float y) :Snowflake(duration), pos(y, x), buffer(), t(0) {}
+			void update()override;
+			void draw()const override;
+		};
+
 	public:
+		Template() :duration(0) {}
 		Template(int duration) :duration(duration) {}
 	};
 
 	static inline std::unordered_map<int, Template> data;
 
+public:
 	static int load(const char* FileName);
 	static void TestWrite();
 };

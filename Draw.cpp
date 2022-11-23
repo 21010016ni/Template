@@ -101,7 +101,7 @@ void Draw::lineAA(float x0, float y0, float x1, float y1, unsigned int color, fl
 
 void Draw::lineAA(const Point<float>& dst0, const Point<float>& dst1, unsigned int color, float thick) const
 {
-	DrawLine(shake.x(lv) + pos.x + dst0.x, shake.y(lv) + pos.y + dst0.y, shake.x(lv) + pos.x + dst1.x, shake.y(lv) + pos.y + dst1.y, color, thick);
+	DrawLineAA(shake.x(lv) + pos.x + dst0.x, shake.y(lv) + pos.y + dst0.y, shake.x(lv) + pos.x + dst1.x, shake.y(lv) + pos.y + dst1.y, color, thick);
 }
 
 void Draw::box(int x, int y, int w, int h, unsigned int color, bool fill)const
