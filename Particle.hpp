@@ -34,6 +34,7 @@ public:
 
 class Particle
 {
+public:
 	static inline std::list<std::unique_ptr<Snowflake>> snowflake;
 	static inline std::list<std::unique_ptr<Emitter>> emitter;
 

@@ -11,20 +11,21 @@ void Game::preset()
 
 Game::Message Game::update()
 {
-	Particle::update();
+	static int effect = -1;
 	if (Mouse::click(MOUSE_INPUT_1))
 	{
-		//Particle::emit<Effect>(Mouse::x(), Mouse::y());
-	}
-	if(Keyboard::push(VK_SPACE))
-	{
-		Effect::TestWrite();
-		Effect::load("data.bin");
+		if(effect == -1)
+		{
+			Effect::TestWrite();
+			effect = Effect::load("data.bin");
+		}
+		Effect::emit(Mouse::x(), Mouse::y(), effect);
 	}
 	if (Keyboard::push(VK_ESCAPE))
 	{
 		return Message::quit;
 	}
+	Particle::update();
 	return Message::none;
 }
 

@@ -2,6 +2,9 @@
 
 void Particle::update()
 {
+	for(const auto& i : emitter)
+		if(i->spawn())
+			snowflake.emplace_back(i->generate());
 	for (auto i = snowflake.begin(); i != snowflake.cend();)
 	{
 		(*i)->update();
@@ -12,9 +15,6 @@ void Particle::update()
 		}
 		++i;
 	}
-	for (const auto& i : emitter)
-		if (i->spawn())
-			snowflake.emplace_back(i->generate());
 }
 
 void Particle::draw()

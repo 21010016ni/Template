@@ -10,48 +10,39 @@ class Effect
 	{
 		friend Effect;
 
-		struct Pixel
+		struct Shape
 		{
+			char type;
 			unsigned char mode;
 			short start;
+			float preset[8];
 			std::vector<uint32_t> func;
-			Pixel(unsigned char mode, unsigned short start) :mode(mode), start(start) {}
-		};
 
-		struct Circle :public Pixel
-		{
-			int num;
-			bool fill;
-			Circle(unsigned char mode, unsigned short start, int num, bool fill) :Pixel(mode, start), num(num), fill(fill) {}
-		};
-
-		struct Polygon :public Pixel
-		{
-			int num;
-			Polygon(unsigned char mode, unsigned short start, int num) :Pixel(mode, start), num(num) {}
-		};
-
-		struct Line :public Pixel
-		{
-			Line(unsigned char mode, unsigned short start) :Pixel(mode, start) {}
+			// “_Aü
+			Shape(char type, unsigned char mode, unsigned short start) :type(type), mode(mode), start(start)
+			{
+				for(int i = 0; i < 8; ++i)
+					preset[i] = 0;
+			}
+			// ‰~
+			Shape(char type, unsigned char mode, unsigned short start, int num, bool fill) :type(type), mode(mode), start(start)
+			{
+				for(int i = 0; i < 8; ++i)
+					preset[i] = 0;
+				preset[5] = fill;
+				preset[6] = num;
+			}
+			// ‘½ŠpŒ`
+			Shape(char type, unsigned char mode, unsigned short start, int num) :type(type), mode(mode), start(start)
+			{
+				for(int i = 0; i < 8; ++i)
+					preset[i] = 0;
+				preset[6] = num;
+			}
 		};
 
 		short duration;
-		std::vector<std::unique_ptr<Pixel>> shape;
-
-		class Instance :public Snowflake
-		{
-			// ‚±‚Ì•Ó‚É}Œ`‚Æ‚»‚ÌŠÖ”‚ğ‚µ‚Ü‚¢‚±‚Ş\‘¢‘Ì
-
-			Point<float> pos;
-			int t;
-			int buffer[8];
-
-		public:
-			Instance(int duration, float x, float y) :Snowflake(duration), pos(y, x), buffer(), t(0) {}
-			void update()override;
-			void draw()const override;
-		};
+		std::vector<std::unique_ptr<Shape>> shape;
 
 	public:
 		Template() :duration(0) {}
@@ -61,7 +52,57 @@ class Effect
 	static inline std::unordered_map<int, Template> data;
 
 public:
+	class Instance :public Snowflake
+	{
+		// ‚±‚Ì•Ó‚É}Œ`‚Æ‚»‚ÌŠÖ”‚ğ‚µ‚Ü‚¢‚±‚Ş\‘¢‘Ì
+		struct Shape
+		{
+			char type;
+			unsigned char mode;
+			short start;
+			float buffer[8];
+			std::vector<uint32_t> func;
+
+			Shape(char type, unsigned char mode, short start, float pre[8], const std::vector<uint32_t>& func)
+				:type(type), mode(mode), start(start), func(func)
+			{
+				for(int i = 0; i < 8; ++i)
+					buffer[i] = pre[i];
+			}
+		};
+
+		Draw d;
+		int t;
+		std::vector<Shape> shape;
+
+	public:
+		Instance(float x, float y, const Template& temp);
+		void update()override;
+		void draw()const override;
+	};
+
 	static int load(const char* FileName);
 	static void TestWrite();
+	static const Template& get(int handle)
+	{
+		auto i = data.find(handle);
+		if(i == data.end())
+			throw;
+		return i->second;
+	}
+
+	static void emit(float x,float y,int handle)
+	{
+		auto i = data.find(handle);
+		if(i == data.end())
+			throw;
+		Particle::snowflake.push_back(std::unique_ptr<Snowflake>(new Instance(x, y, i->second)));
+		//Particle::emit<Instance>(x, y, (const Template &)i->second);
+	}
+
+	static void erase(int handle)
+	{
+		data.erase(handle);
+	}
 };
 
