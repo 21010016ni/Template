@@ -1,4 +1,5 @@
 #include "Particle.hpp"
+#include "Draw.hpp"
 
 void Particle::update()
 {
@@ -21,5 +22,6 @@ void Particle::draw()
 {
 	for (const auto& i : snowflake)
 		i->draw();
+	Draw::blend();
 }
 

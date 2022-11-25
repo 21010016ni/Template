@@ -263,6 +263,14 @@ void Effect::TestWrite()
 	ofs.write(reinterpret_cast<char*>(&(buf32 = command::equal)), 4);	// =
 }
 
+void Effect::emit(float x, float y, int handle)
+{
+	auto i = data.find(handle);
+	if (i == data.end())
+		throw;
+	Particle::emit<Instance,float,float,const Template&>(x, y, i->second);
+}
+
 Effect::Instance::Instance(float x, float y, const Template& temp)
 	:Snowflake(temp.duration), d(x, y, 8), t(0)
 {
@@ -302,7 +310,6 @@ void Effect::Instance::update()
 					case command::height:
 						*value.top() = common::height;
 						break;
-
 					case command::pi:
 						*value.top() = common::pi;
 						break;

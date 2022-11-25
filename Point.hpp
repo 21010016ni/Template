@@ -7,8 +7,7 @@ template<class T> class Point
 public:
 	T y, x;
 
-	Point(const T& v = 0) :y(v), x(v) {}
-	Point(const T& y, const T& x) :y(y), x(x) {}
+	Point(const T& y = 0, const T& x = 0) :y(y), x(x) {}
 	~Point() {}
 
 	Point operator+(const Point& v)const noexcept { return {y + v.y,x + v.x}; }

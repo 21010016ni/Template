@@ -91,14 +91,7 @@ public:
 		return i->second;
 	}
 
-	static void emit(float x,float y,int handle)
-	{
-		auto i = data.find(handle);
-		if(i == data.end())
-			throw;
-		Particle::snowflake.push_back(std::unique_ptr<Snowflake>(new Instance(x, y, i->second)));
-		//Particle::emit<Instance>(x, y, (const Template &)i->second);
-	}
+	static void emit(float x, float y, int handle);
 
 	static void erase(int handle)
 	{
