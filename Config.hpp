@@ -7,6 +7,7 @@ namespace common
 	extern int height;
 	extern int colorbit;
 	extern int fps;
+	extern bool windowmode;
 
 	extern std::mt19937 engine;
 

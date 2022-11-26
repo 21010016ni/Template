@@ -56,6 +56,7 @@ BEGIN
     BEGIN
         MENUITEM "êVãKçÏê¨(&N)",                    ID_NEW
         MENUITEM "ï€ë∂(&S)",                      ID_SAVE
+        MENUITEM SEPARATOR
         MENUITEM "èIóπ(&X)",                      ID_END
     END
 END
