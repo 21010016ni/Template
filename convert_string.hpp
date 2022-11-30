@@ -20,5 +20,11 @@ namespace ext
 	{
 		return reinterpret_cast<const T*>(v.c_str());
 	}
+
+	template<class T, class U>
+	std::basic_string<T, std::char_traits<T>, std::allocator<T>> vto(U v)
+	{
+		return convert<T>(std::to_string(v));
+	}
 };
 
