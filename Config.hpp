@@ -1,6 +1,9 @@
 #pragma once
 #include <random>
 
+#define USE_RESOURCE
+#define USE_CONSOLE
+
 namespace common
 {
 	extern int width;

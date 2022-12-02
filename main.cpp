@@ -2,9 +2,10 @@
 #include "Config.hpp"
 #include "Input.hpp"
 #include "Game.hpp"
-#include "resource.h"
 
-#define USE_CONSOLE
+#ifdef USE_RESOURCE
+#include "resource.h"
+#endif // USE_RESOURCE
 
 int common::width = 640;
 int common::height = 480;
@@ -14,14 +15,16 @@ bool common::windowmode = true;
 
 std::mt19937 common::engine(std::random_device{}());
 
+#ifdef USE_RESOURCE
+void MenuItemSelectCallBack(const TCHAR* ItemName, int ItemID)
+{
+}
+#endif // USE_RESOURCE
+
 #ifdef USE_CONSOLE
 #pragma comment(linker, "/SUBSYSTEM:CONSOLE")
 int main() { return WinMain(GetModuleHandle(0), NULL, NULL, _Notnull_ SW_SHOWDEFAULT); }
 #endif // USE_CONSOLE
-
-void MenuItemSelectCallBack(const TCHAR* ItemName, int ItemID)
-{
-}
 
 int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 {
@@ -33,6 +36,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	//----------------------------------------------------------------<<
 	// ウィンドウモードを設定
 	ChangeWindowMode(common::windowmode);
+#ifdef USE_RESOURCE
 	// もしウィンドウモードなら
 	if (common::windowmode)
 	{
@@ -41,6 +45,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		// メニューから呼び出すコールバック関数を設定
 		SetMenuItemSelectCallBackFunction(MenuItemSelectCallBack);
 	}
+#endif // USE_RESOURCE
 	// 使用する文字コードをUTF-8に設定
 	SetUseCharCodeFormat(DX_CHARCODEFORMAT_UTF8);
 
