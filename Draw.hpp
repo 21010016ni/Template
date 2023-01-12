@@ -1,51 +1,54 @@
 #pragma once
 #include <string>
 #include "Point.hpp"
+#include "BitFlag.hpp"
 
-enum ref :unsigned char
+namespace ref
 {
-	top = 0x00,
-	bottom = 0x01,
-	middle = 0x03,
-	left = 0x00,
-	right = 0x04,
-	center = 0x0c,
-};
+	constexpr BitFlag
+		top(0x00),
+		bottom(0x01),
+		middle(0x03),
+		left(0x00),
+		right(0x04),
+		center(0x0c);
+}
 
-enum blendmode :unsigned char
+namespace blendmode
 {
-	noblend = 0,
-	alpha = 1,
-	add = 2,
-	sub = 3,
-	mul = 4,
-	sub2 = 5,
-	xOR = 6,
-	destcolor = 8,
-	invdestcolor = 9,
-	invsrc = 10,
-	mula = 11,
-	alpha_x4 = 12,
-	add_x4 = 13,
-	srccolor = 14,
-	half_add = 15,
-	sub1 = 16,
-	pma_alpha = 17,
-	pma_add = 18,
-	pma_sub = 19,
-	pma_invsrc = 20,
-	pma_alpha_x4 = 21,
-	pma_add_x4 = 22,
-	live2d_zero = 23,
-	live2d_normal = 24,
-	live2d_add = 25,
-	live2d_mult = 26,
-	live2d_mask = 27,
-	spine_normal = 28,
-	spine_additive = 29,
-	spine_multiply = 30,
-	spine_screen = 31,
-	custom = 32,
+	constexpr unsigned char
+		noblend = 0,
+		alpha = 1,
+		add = 2,
+		sub = 3,
+		mul = 4,
+		sub2 = 5,
+		xOR = 6,
+		destcolor = 8,
+		invdestcolor = 9,
+		invsrc = 10,
+		mula = 11,
+		alpha_x4 = 12,
+		add_x4 = 13,
+		srccolor = 14,
+		half_add = 15,
+		sub1 = 16,
+		pma_alpha = 17,
+		pma_add = 18,
+		pma_sub = 19,
+		pma_invsrc = 20,
+		pma_alpha_x4 = 21,
+		pma_add_x4 = 22,
+		live2d_zero = 23,
+		live2d_normal = 24,
+		live2d_add = 25,
+		live2d_mult = 26,
+		live2d_mask = 27,
+		spine_normal = 28,
+		spine_additive = 29,
+		spine_multiply = 30,
+		spine_screen = 31,
+		custom = 32;
 };
 
 class Draw
@@ -75,7 +78,7 @@ class Draw
 		const float y(int lv)const { return (lv >= lvmn && lv <= lvmx) ? v.y : 0; }
 	};
 
-	static const Point<int> GetRef(unsigned char ref, int w, int h);
+	static const Point<int> GetRef(BitFlag ref, int w, int h);
 
 public:
 	static inline int font = -1;
@@ -117,7 +120,11 @@ public:
 	void graph(int x, int y, int graph, bool alpha)const;
 	void graph(const Point<int>& dst, int graph, bool alpha)const;
 
-	int string(int x, int y, const std::u8string& v, unsigned int color, unsigned char ref = 0, unsigned int edge = 0u)const;
-	int string(const Point<int>& dst, const std::u8string& v, unsigned int color, unsigned char ref = 0, unsigned int edge = 0u)const;
+	void sprite(int dstX, int dstY, int srcX, int srcY, int w, int h, int graph, bool alpha, bool reverseX = false, bool reverseY = false)const;
+	void sprite(const Point<int>& dst, const Point<int>& src, const Point<int>& siz, int graph, bool alpha, bool reverseX = false, bool reverseY = false)const;
+
+	int string(int x, int y, const std::u8string& v, unsigned int color, BitFlag ref = 0, unsigned int edge = 0u)const;
+	int string(const Point<int>& dst, const std::u8string& v, unsigned int color, BitFlag ref = 0, unsigned int edge = 0u)const;
+	static int getStringWidth(const std::u8string& v, bool vertical = false);
 };
 

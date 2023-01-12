@@ -3,28 +3,30 @@
 #include <string>
 #include <unordered_map>
 
-enum class type :char
-{
-	graph,
-	sound,
-	font,
-};
-
 class Handle
 {
+public:
+	enum class type :char
+	{
+		graph,
+		sound,
+		font,
+	};
+
+private:
 	struct Data
 	{
-		const type t;
-		const int handle;
-		int duration;
+		type t;
+		int handle;
+
 	public:
+		int duration;
+
 		Data(type t, int handle, int duration) :t(t), handle(handle), duration(duration) {}
 		~Data();
-		Data& operator--()noexcept { if(duration != -1)--duration; return *this; }
-		constexpr bool operator()()const { return duration > 0 || duration == -1; }
-		void set(int value)noexcept { duration = value; }
 		constexpr int get()const noexcept { return handle; }
 	};
+
 	static inline std::unordered_map<std::u8string, std::unique_ptr<Data>> handle;
 
 public:

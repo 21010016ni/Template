@@ -7,6 +7,7 @@
 #include "resource.h"
 #endif // USE_RESOURCE
 
+HWND common::hwnd;
 int common::width = 640;
 int common::height = 480;
 int common::colorbit = 32;
@@ -18,6 +19,10 @@ std::mt19937 common::engine(std::random_device{}());
 #ifdef USE_RESOURCE
 void MenuItemSelectCallBack(const TCHAR* ItemName, int ItemID)
 {
+	switch(ItemID)
+	{
+		// ここに項目
+	}
 }
 #endif // USE_RESOURCE
 
@@ -48,18 +53,21 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 #endif // USE_RESOURCE
 	// 使用する文字コードをUTF-8に設定
 	SetUseCharCodeFormat(DX_CHARCODEFORMAT_UTF8);
+	// ファイルのドラッグ&ドロップを有効にする
+	//SetDragFileValidFlag(TRUE);
 
 	//---------------------------------------------------------------->>
 	// 初期化
 	if(DxLib_Init() == -1) return -1;
+	common::hwnd = GetMainWindowHandle();
 	SetDrawScreen(DX_SCREEN_BACK);
 	// 初期化ブロック
 	//----------------------------------------------------------------<<
-	Game::preset();	
+	Game::preset();
 
 	//---------------------------------------------------------------->>
 	// タイトル表示
-	SetMainWindowText("");
+	SetMainWindowText((const char*)u8"\"Strings\"");
 	// メインループ
 	while(ProcessMessage() != -1)
 	{

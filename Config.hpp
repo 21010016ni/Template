@@ -1,11 +1,14 @@
 #pragma once
 #include <random>
+#include <Windows.h>
 
-#define USE_RESOURCE
+// 使用しない場合コメントアウト
+//#define USE_RESOURCE
 #define USE_CONSOLE
 
 namespace common
 {
+	extern HWND hwnd;
 	extern int width;
 	extern int height;
 	extern int colorbit;

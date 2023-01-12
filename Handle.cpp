@@ -7,10 +7,15 @@ void Handle::update()
 {
 	for (auto i = handle.cbegin(); i != handle.cend();)
 	{
-		if (!(--(*i->second))())
+		if (i->second->duration != -1)
 		{
-			i = handle.erase(i);
-			continue;
+			if (i->second->duration <= 0)
+			{
+				i = handle.erase(i);
+				continue;
+			}
+			else
+				--i->second->duration;
 		}
 		++i;
 	}
@@ -59,7 +64,7 @@ int Handle::get(const std::u8string& key, type t, int value)
 	}
 	else
 	{
-		i->second->set(value);
+		i->second->duration = value;
 		return i->second->get();
 	}
 }
@@ -73,6 +78,9 @@ Handle::Data::~Data()
 		break;
 	case type::sound:
 		DeleteSoundMem(handle);
+		break;
+	case type::font:
+		DeleteFontToHandle(handle);
 		break;
 	}
 }
