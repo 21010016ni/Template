@@ -1,22 +1,23 @@
 #pragma once
-#include <compare>
 #include <cmath>
+#include <compare>
 
-template<class T> class Point
+template<typename T> class Point
 {
 public:
 	T y, x;
 
-	Point(const T& y = 0, const T& x = 0) :y(y), x(x) {}
+	explicit constexpr Point(const T& v = 0) :y(v), x(v) {}
+	explicit constexpr Point(const T& y, const T& x) :y(y), x(x) {}
 	~Point() {}
 
-	Point operator+(const Point& v)const noexcept { return {y + v.y,x + v.x}; }
-	Point operator-(const Point& v)const noexcept { return {y - v.y,x - v.x}; }
-	Point operator*(const Point& v)const noexcept { return {y * v.y,x * v.x}; }
-	Point operator/(const Point& v)const noexcept { return {y / v.y,x / v.x}; }
+	constexpr Point operator+(const Point& v)const noexcept { return Point(y + v.y, x + v.x); }
+	constexpr Point operator-(const Point& v)const noexcept { return Point(y - v.y, x - v.x); }
+	constexpr Point operator*(const Point& v)const noexcept { return Point(y * v.y, x * v.x); }
+	constexpr Point operator/(const Point& v)const noexcept { return Point(y / v.y, x / v.x); }
 
-	Point operator*(const T& v)const noexcept { return {y * v,x * v}; }
-	Point operator/(const T& v)const noexcept { return {y / v,x / v}; }
+	constexpr Point operator*(const T& v)const noexcept { return Point(y * v, x * v); }
+	constexpr Point operator/(const T& v)const noexcept { return Point(y / v, x / v); }
 
 	Point& operator+=(const Point& v)noexcept { return y += v.y, x += v.x, *this; }
 	Point& operator-=(const Point& v)noexcept { return y -= v.y, x -= v.x, *this; }
@@ -28,15 +29,16 @@ public:
 
 	auto operator<=>(const Point&)const = default;
 
-	constexpr Point operator()(const T& t)const noexcept { return {t / x,t % x}; }
+	constexpr Point operator()(const T& t)const noexcept { return Point(t / x, t % x); }
 
-	constexpr Point approximate(const Point& siz, int level)const { return {y / (siz.y / level),x / (siz.x / level)}; }
+	constexpr Point approximate(const Point& siz, int level)const { return Point(y / (siz.y / level), x / (siz.x / level)); }
+	constexpr Point normalize()const { return *this / length<T>(); }
 
-	template<typename U>constexpr U length()const noexcept { return std::sqrt(y * y + x * x); }
-	template<typename U>constexpr U distance(Point t)const noexcept { return (t -= *this).length<U>(); }
-	template<typename U>constexpr Point& rotate(const U& t)noexcept { return y = y * cos(t) + x * sin(t), x = -y * sin(t) + x * cos(t), *this; }
-	template<typename U>constexpr U cross_check(const Point& t, const U& ang)const { return (y - t.y) * cos(ang) - (x - t.x) * sin(ang); }
+	template<typename U> constexpr U length()const { return std::sqrt(y * y + x * x); }
+	template<typename U> constexpr U distance(const Point& t)const { return std::sqrt((y - t.y) * (y - t.y) + (x - t.x) * (x - t.x)); }
+	template<typename U> Point& rotate(const U& t)noexcept { return y = y * cos(t) + x * sin(t), x = -y * sin(t) + x * cos(t), *this; }
+	template<typename U> constexpr U cross_check(const Point& t, const U& ang)const { return (y - t.y) * cos(ang) - (x - t.x) * sin(ang); }
 
-	template<typename U>constexpr explicit operator Point<U>()const noexcept { return {(U)y,(U)x}; };
+	template<typename U> constexpr explicit operator Point<U>()const noexcept { return Point<U>(y, x); };
 };
 

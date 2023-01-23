@@ -1,5 +1,5 @@
 #include <DxLib.h>
-#include "Config.hpp"
+#include "common.hpp"
 #include "Input.hpp"
 #include "Game.hpp"
 
@@ -8,11 +8,15 @@
 #endif // USE_RESOURCE
 
 HWND common::hwnd;
-int common::width = 640;
-int common::height = 480;
+int common::width = 1024;
+int common::height = 768;
 int common::colorbit = 32;
 int common::fps = 60;
 bool common::windowmode = true;
+
+int common::fc[8] = {0x3b7960,0x5a79ba,0x9370db,0xc0c0c0,0xbee0ce,0xfef263,0xf8b862,0xe95464};
+int common::lc[2] = {0xc8c2be,0x302833};
+int common::bc = 0x0b0b0b;
 
 std::mt19937 common::engine(std::random_device{}());
 
@@ -31,7 +35,7 @@ void MenuItemSelectCallBack(const TCHAR* ItemName, int ItemID)
 int main() { return WinMain(GetModuleHandle(0), NULL, NULL, _Notnull_ SW_SHOWDEFAULT); }
 #endif // USE_CONSOLE
 
-int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
+int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nShowCmd)
 {
 	// 初期化
 	int count = 0;	// FPS調整用
@@ -61,6 +65,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	if(DxLib_Init() == -1) return -1;
 	common::hwnd = GetMainWindowHandle();
 	SetDrawScreen(DX_SCREEN_BACK);
+	SetMouseDispFlag(false);
 	// 初期化ブロック
 	//----------------------------------------------------------------<<
 	Game::preset();
