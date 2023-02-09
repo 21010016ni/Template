@@ -4,10 +4,25 @@
 #include "common_functions.hpp"
 #include "Input.hpp"
 
+#define _range(_value,_min,_max) __min(__max(_value,_min),_max)
+
+int t;
+int fonts[4];
+
+//class Announce
+//{
+//	std::vector<std::u8string>
+//};
+
+Draw Game::display(0, 0, 0);
+
 void Game::preset()
 {
 	//Particle::set<Dust>(20);
-	Draw::font = LoadFontDataToHandle("data/font/NotoSansJPLight.dft");
+	//Draw::font = LoadFontDataToHandle("data/font/NotoSansJPLight.dft");
+	fonts[0] = CreateFontToHandle(NULL, 60, 3, DX_FONTTYPE_ANTIALIASING_4X4);
+	fonts[1] = CreateFontToHandle(NULL, 40, 2, DX_FONTTYPE_ANTIALIASING_4X4);
+	t = 0;
 }
 
 Game::Message Game::update()
@@ -16,6 +31,7 @@ Game::Message Game::update()
 	{
 		return Message::quit;
 	}
+	++t;
 
 	//Particle::update();
 	return Message::none;
@@ -23,6 +39,65 @@ Game::Message Game::update()
 
 void Game::draw()
 {
+	Draw::blend();
+	if (t >= 60 && t < 120)
+	{
+		Draw::font = fonts[0];
+		display.string(common::width / 2, common::height / 2, u8"yŒxz", 0xffffff, ref::center | ref::middle);
+	}
+	if (t >= 120 && t < 380)
+	{
+		Draw::font = fonts[1];
+		display.string(common::width / 2, common::height / 2 - _range((t - 180) * 20, 0, 200), u8"y‹­§·sz", 0xffffff, ref::center | ref::middle);
+	}
+	if (t >= 220 && t < 380)
+	{
+		switch (__min((t - 220) / 30, 3))
+		{
+		case 3:
+			display.string(common::width / 2, common::height / 2 + 200, u8"y‰¤‚Íˆêlz", 0xffffff, ref::center | ref::middle);
+			__fallthrough;
+		case 2:
+			display.string(common::width / 2, common::height / 2 + 100, u8"y’N‚à‹~‚¦‚È‚¢z", 0xffffff, ref::center | ref::middle);
+			__fallthrough;
+		case 1:
+			display.string(common::width / 2, common::height / 2, u8"yÁ‚¦‚ä‚­’è‚ßA–½‚Ì“”ccz", 0xffffff, ref::center | ref::middle);
+			__fallthrough;
+		case 0:
+			display.string(common::width / 2, common::height / 2 - 100, u8"y‹tb‚ÌˆŒYz", 0xffffff, ref::center | ref::middle);
+		}
+	}
+	if (t >= 380)
+	{
+		if (t >= 485)
+		{
+			Draw::blend(blendmode::alpha, 32);
+			Draw::font = fonts[1];
+		}
+		display.string(common::width / 2, common::height / 2 - _range((t - 380) * 20, 0, 100), u8"yŸ—˜ğŒ‚ª’Ç‰Á‚³‚ê‚Ü‚µ‚½z", 0xffffff, ref::center | ref::middle);
+	}
+	if (t >= 405)
+	{
+		switch (__min((t - 405) / 30, 1))
+		{
+		case 1:
+			display.string(common::width / 2, common::height / 2 + 100, u8"y§ŒÀŠÔF00.00z", 0xffffff, ref::center | ref::middle);
+			__fallthrough;
+		case 0:
+			display.string(common::width / 2, common::height / 2, u8"yŸ—˜ğŒFŒNå‚ÌEŠQz", 0xffffff, ref::center | ref::middle);
+		}
+	}
+	if (t >= 485)
+	{
+		Draw::blend();
+		display.string(common::width / 2 - _range((t - 485) * 10, 0, 100), common::height / 2 - _range((t - 485) * 10, 0, 100), u8"y–Ú•Wccz", 0xffffff, ref::center | ref::middle);
+	}
+	if (t >= 545)
+	{
+		Draw::font = fonts[0];
+		display.string(common::width / 2, common::height / 2, u8"yŒNåzyƒTƒgƒDzyLevel-24z", 0xffffff, ref::center | ref::middle);
+	}
+
 	//Particle::draw();
 }
 
